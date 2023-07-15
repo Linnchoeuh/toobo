@@ -23,8 +23,8 @@ function objectNotEmpty(target: object)
         <MainInfo/>
         <div class="side-info">
             <SideInfo>
-                <template #title> UV Index </template>
-                This might work
+                <template #title> UV Level </template>
+                {{ store.currentWeather.current.uv }}
             </SideInfo>
             <SideInfo>
                 <template #title> Humidity </template>
