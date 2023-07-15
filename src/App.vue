@@ -2,6 +2,7 @@
 import TheWelcome from './components/TheWelcome.vue'
 import SearchBar from './components/SearchBar.vue'
 import CurrentWeather from './components/CurrentWeather.vue';
+import HourlyWeather from './components/HourlyWeather.vue';
 import { useCityDataStore } from "@/stores/CityDataStore"
 
 const store = useCityDataStore();
@@ -11,7 +12,8 @@ store.refreshWeatherWithIp();
 
 <template>
   <div class="sub-search-bar">
-    <CurrentWeather></CurrentWeather>
+    <CurrentWeather/>
+    <HourlyWeather/>
     <TheWelcome />
   </div>
   <SearchBar />
