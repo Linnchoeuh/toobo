@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useCityDataStore } from "@/stores/CityDataStore"
-import HourlyWeatherTile from "@/components/HourlyWeatherTile.vue"
+import NextDaysWeatherTile from "@/components/NextDaysWeatherTile.vue"
 
 const store = useCityDataStore();
 
 const listo = ref<Array<number>>([]);
 
-for (let i = 0; i < 100; ++i) {
+for (let i = 0; i < 5; ++i) {
     listo.value.push(3);
 }
 
@@ -26,13 +26,12 @@ function objectNotEmpty(target: object)
     <div v-if="objectNotEmpty(store.currentWeather)" class="hourly-weather-block">
         <div class="title">
             <div class="title-sub">
-                <h1>Hourly weather</h1>
+                <h1>Next day weather</h1>
             </div>
         </div>
         <div class="tile-list">
-            <HourlyWeatherTile v-for="elem in store.forecastHourly">
-                
-            </HourlyWeatherTile>
+            <NextDaysWeatherTile v-for="elem in listo">
+            </NextDaysWeatherTile>
         </div>
     </div>
 </template>
@@ -41,7 +40,7 @@ function objectNotEmpty(target: object)
 
 .hourly-weather-block {
     position: relative;
-    margin-bottom: 30px;
+    margin-bottom: 100px;
 }
 
 .title {
@@ -60,16 +59,7 @@ function objectNotEmpty(target: object)
 
 .tile-list {
     position: relative;
-    top: 5px;
-    left: 5px;
-    width: 100vw;
-    overflow-x: auto;
-    white-space: nowrap;
 }
 
-.tile-list div {
-    display: inline-block;
-    vertical-align: middle;
-}
 
 </style>

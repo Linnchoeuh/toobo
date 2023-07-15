@@ -29,6 +29,8 @@ export const useCityDataStore = defineStore(
                 ip: "0.0.0.0",
                 city: {},
                 currentWeather: {},
+                forecast: {},
+                forecastHourly: [],
             };
         },
 
@@ -41,6 +43,7 @@ export const useCityDataStore = defineStore(
                     this.ip = response.data.ip;
                     await this.apiGetCurrentWeather(this.ip);
                     this.cityName = this.currentWeather.location.name;
+                    this.apiGetForecast(this.ip);
                 } catch (error) {
                     console.error(error);
                 }
@@ -84,8 +87,28 @@ export const useCityDataStore = defineStore(
                     console.error(error);
                 }
             },
+            async apiGetForecast(apiQParameter: string)
+            {
+                try {
+                    const response = await axios.get(
+                        this.baseUrl + "forecast.json", {
+                            params: {
+                                key: this.apiKey,
+                                q: apiQParameter,
+                            }
+                        }
+                    );
+                    this.forecast = response.data;
+                    this.forecastHourly = response.data.forecast.forecastday[0].hour;
+                    console.log("Forecast weather:", response.data);
+                    console.log("Forecast weather hourly:", this.forecastHourly);
+                } catch (error) {
+                    console.error(error);
+                }
+            },
             async changeCity(newCityName: string)
             {
+                let formatedLatLonString: string;
                 let foundCities: Array<CityDataResponse> = [];
 
                 if (!this.isCityDataSet()) {
@@ -98,8 +121,9 @@ export const useCityDataStore = defineStore(
                 }
                 console.log(this.city);
                 this.cityName = this.city.name;
-                this.apiGetCurrentWeather(this.city.lat.toString() +
-                    "," + this.city.lon.toString())
+                formatedLatLonString = this.city.lat.toString() + "," + this.city.lon.toString();
+                this.apiGetCurrentWeather(formatedLatLonString);
+                this.apiGetForecast(formatedLatLonString);
             },
             setCityData(cityData: object)
             {

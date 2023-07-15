@@ -46,6 +46,7 @@ function objectNotEmpty(target: object)
 
 .current-weather-block {
     width: 100vw;
+    margin-bottom: 30px;
 }
 
 .current-weather-block > div {

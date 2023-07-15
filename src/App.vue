@@ -3,6 +3,7 @@ import TheWelcome from './components/TheWelcome.vue'
 import SearchBar from './components/SearchBar.vue'
 import CurrentWeather from './components/CurrentWeather.vue';
 import HourlyWeather from './components/HourlyWeather.vue';
+import NextDaysWeather from './components/NextDaysWeather.vue';
 import { useCityDataStore } from "@/stores/CityDataStore"
 
 const store = useCityDataStore();
@@ -14,7 +15,8 @@ store.refreshWeatherWithIp();
   <div class="sub-search-bar">
     <CurrentWeather/>
     <HourlyWeather/>
-    <TheWelcome />
+    <NextDaysWeather/>
+    <!-- <TheWelcome /> -->
   </div>
   <SearchBar />
 </template>
@@ -24,36 +26,12 @@ store.refreshWeatherWithIp();
 .sub-search-bar {
   left: 0px;
   position: absolute;
-  top: 100px;
+  top: 120px;
+}
+@media (max-width:800px) {
+    .sub-search-bar {
+      top: 220px;
+    }
 }
 
 </style>
-
-<!-- <style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style> -->
