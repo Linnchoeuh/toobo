@@ -19,7 +19,6 @@ function objectNotEmpty(target: object)
     return false;
 }
 
-
 </script>
 
 <template>
@@ -30,8 +29,12 @@ function objectNotEmpty(target: object)
             </div>
         </div>
         <div class="tile-list">
-            <HourlyWeatherTile v-for="elem in store.forecastHourly">
-                
+            <HourlyWeatherTile v-for="elem in store.forecastHourly" :image-url="elem.condition.icon">
+                <template #time> {{ elem.time.split(' ')[1] }} </template>
+                <template #weather> {{ elem.condition.text }} </template>
+                <template #temp> {{ elem.temp_c }}°C / </template>
+                <template #feels-like> {{ elem.feelslike_c }}°C </template>
+                <template #rain-prob> {{ elem.chance_of_rain }}% </template>
             </HourlyWeatherTile>
         </div>
     </div>
@@ -62,7 +65,7 @@ function objectNotEmpty(target: object)
     position: relative;
     top: 5px;
     left: 5px;
-    width: 100vw;
+    width: 99vw;
     overflow-x: auto;
     white-space: nowrap;
 }
