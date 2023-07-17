@@ -95,11 +95,13 @@ export const useCityDataStore = defineStore(
                             params: {
                                 key: this.apiKey,
                                 q: apiQParameter,
+                                days: 14,
                             }
                         }
                     );
                     this.forecast = response.data;
                     this.forecastHourly = response.data.forecast.forecastday[0].hour;
+                    this.getNext24Hours(this.forecast)
                     console.log("Forecast weather:", response.data);
                     console.log("Forecast weather hourly:", this.forecastHourly);
                 } catch (error) {
@@ -124,6 +126,30 @@ export const useCityDataStore = defineStore(
                 formatedLatLonString = this.city.lat.toString() + "," + this.city.lon.toString();
                 this.apiGetCurrentWeather(formatedLatLonString);
                 this.apiGetForecast(formatedLatLonString);
+            },
+            getNext24Hours(forecastData: object)
+            {
+                let hourCount: number = 0;
+                let forecastDay: object;
+                let hour: object;
+                this.forecastHourly = [];
+
+                for (let i = 0; i < forecastData.forecast.forecastday.length; ++i) {
+                    forecastDay = forecastData.forecast.forecastday[i];
+                    console.log(forecastData.forecast.forecastday, forecastDay)
+                    for (let k = 0; k < forecastDay.hour.length; ++k) {
+                        hour = forecastDay.hour[k];
+                        console.log(Date.now() / 1000, hour.time_epoch, hour)
+                        if (Date.now() / 1000 < hour.time_epoch) {
+                            this.forecastHourly.push(hour);
+                            ++hourCount;
+                        }
+                        if (hourCount >= 24)
+                            break;
+                    }
+                    if (hourCount >= 24)
+                        break;
+                }
             },
             setCityData(cityData: object)
             {

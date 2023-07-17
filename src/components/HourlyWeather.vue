@@ -25,7 +25,7 @@ function objectNotEmpty(target: object)
     <div v-if="objectNotEmpty(store.currentWeather)" class="hourly-weather-block">
         <div class="title">
             <div class="title-sub">
-                <h1>Hourly weather</h1>
+                <h1>Next 24 hours forecast</h1>
             </div>
         </div>
         <div class="tile-list">
