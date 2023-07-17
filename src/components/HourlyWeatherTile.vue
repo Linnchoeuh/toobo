@@ -28,7 +28,7 @@ const store = useCityDataStore();
             <h4 class="rain-prob-div">
                     <slot name="rain-prob"></slot>
             </h4>
-            
+
         </div>
     </div>
 </template>

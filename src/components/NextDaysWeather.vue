@@ -23,14 +23,23 @@ function objectNotEmpty(target: object)
 </script>
 
 <template>
-    <div v-if="objectNotEmpty(store.currentWeather)" class="hourly-weather-block">
+    <div v-if="objectNotEmpty(store.forecast)" class="hourly-weather-block">
         <div class="title">
             <div class="title-sub">
-                <h1>Next day weather</h1>
+                <h1>Next days forecast</h1>
             </div>
         </div>
         <div class="tile-list">
-            <NextDaysWeatherTile v-for="elem in listo">
+            <NextDaysWeatherTile v-for="day in store.forecast.forecast.forecastday"
+            :image-url="day.day.condition.icon">
+                <template #max-temp> {{ day.day.maxtemp_c }}</template>
+                <template #min-temp> {{ day.day.mintemp_c }}</template>
+                <template #date> {{ day.date }}</template>
+                <template #avg-humidity> {{ day.day.avghumidity }}</template>
+                <template #uv> {{ day.day.uv }}</template>
+                <template #max-wind-spd> {{ day.day.maxwind_kph }}</template>
+                <template #sunrise> {{ day.astro.sunrise }}</template>
+                <template #sunset> {{ day.astro.sunset }}</template>
             </NextDaysWeatherTile>
         </div>
     </div>

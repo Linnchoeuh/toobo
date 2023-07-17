@@ -100,10 +100,8 @@ export const useCityDataStore = defineStore(
                         }
                     );
                     this.forecast = response.data;
-                    this.forecastHourly = response.data.forecast.forecastday[0].hour;
                     this.getNext24Hours(this.forecast)
                     console.log("Forecast weather:", response.data);
-                    console.log("Forecast weather hourly:", this.forecastHourly);
                 } catch (error) {
                     console.error(error);
                 }
@@ -136,10 +134,8 @@ export const useCityDataStore = defineStore(
 
                 for (let i = 0; i < forecastData.forecast.forecastday.length; ++i) {
                     forecastDay = forecastData.forecast.forecastday[i];
-                    console.log(forecastData.forecast.forecastday, forecastDay)
                     for (let k = 0; k < forecastDay.hour.length; ++k) {
                         hour = forecastDay.hour[k];
-                        console.log(Date.now() / 1000, hour.time_epoch, hour)
                         if (Date.now() / 1000 < hour.time_epoch) {
                             this.forecastHourly.push(hour);
                             ++hourCount;

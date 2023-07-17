@@ -60,6 +60,11 @@ function objectNotEmpty(target: object)
 .title-sub h1 {
     font-size: 40px;
 }
+@media (max-width:460px) {
+    .title-sub h1 {
+        font-size: 30px;
+    }
+}
 
 .tile-list {
     position: relative;
