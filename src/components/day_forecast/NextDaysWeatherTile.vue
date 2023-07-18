@@ -60,7 +60,7 @@ const props = defineProps({
 .tile-block-sub {
     height: 100%;
     border-radius: 15px;
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: var(--tile-color);
 }
 
 .extra-info-div {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useCityDataStore } from "@/stores/CityDataStore"
-import HourlyWeatherTile from "@/components/HourlyWeatherTile.vue"
+import HourlyWeatherTile from "@/components/hourly_forecast/HourlyWeatherTile.vue"
 
 const store = useCityDataStore();
 
@@ -54,13 +54,13 @@ function objectNotEmpty(target: object)
 .title-sub {
     border-radius: 15px;
     padding: 15px;
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: var(--tile-color);
 }
 
 .title-sub h1 {
-    font-size: 40px;
+    font-size: 50px;
 }
-@media (max-width:460px) {
+@media (max-width:560px) {
     .title-sub h1 {
         font-size: 30px;
     }
@@ -71,6 +71,7 @@ function objectNotEmpty(target: object)
     top: 5px;
     left: 5px;
     width: 99vw;
+    height: 250px;
     overflow-x: auto;
     white-space: nowrap;
 }

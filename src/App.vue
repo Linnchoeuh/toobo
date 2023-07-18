@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import TheWelcome from './components/TheWelcome.vue'
-import SearchBar from './components/SearchBar.vue'
-import CurrentWeather from './components/CurrentWeather.vue';
-import HourlyWeather from './components/HourlyWeather.vue';
-import NextDaysWeather from './components/NextDaysWeather.vue';
+import SearchBar from './components/search_bar/SearchBar.vue'
+import CurrentWeather from './components/current_weather/CurrentWeather.vue';
+import HourlyWeather from './components/hourly_forecast/HourlyWeather.vue';
+import NextDaysWeather from './components/day_forecast/NextDaysWeather.vue';
 import { useCityDataStore } from "@/stores/CityDataStore"
 
 const store = useCityDataStore();
@@ -26,11 +25,11 @@ store.refreshWeatherWithIp();
 .sub-search-bar {
   left: 0px;
   position: absolute;
-  top: 120px;
+  top: 90px;
 }
 @media (max-width:800px) {
     .sub-search-bar {
-      top: 220px;
+      top: 170px;
     }
 }
 

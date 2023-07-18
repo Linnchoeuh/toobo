@@ -30,7 +30,7 @@ const store = useCityDataStore();
 .main-info-sub {
     border-radius: 15px;
     padding: 15px;
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: var(--tile-color);
 }
 
 .main-info h1 {
@@ -53,7 +53,7 @@ const store = useCityDataStore();
     position: relative;
     top: -60px;
     font-size: 30px;
-    color: #808080
+    color: var(--color-text-secondary)
 }
 
 .weather-text {

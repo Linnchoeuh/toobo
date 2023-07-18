@@ -50,8 +50,13 @@ async function getCitySuggestion(prompt: string) {
     left: 0px;
     width: 100vw;
 
-    background: linear-gradient(180deg, black, transparent);
+    background: linear-gradient(180deg, var(--bg-start-color), transparent);
     height: 100px;
+}
+@media (max-width:800px) {
+    .search-bar-block {
+        height: 160px;
+    }
 }
 
 .search-bar {
@@ -65,9 +70,14 @@ async function getCitySuggestion(prompt: string) {
 .search-bar div {
     width: 50%;
     display: inline-block;
-    min-width: 400px;
+    vertical-align: middle;
+    height: 80px;
 }
-
+@media (max-width:800px) {
+    .search-bar div {
+        width: 100%;
+    }
+}
 
 .city-name {
     position: relative;
@@ -78,11 +88,22 @@ async function getCitySuggestion(prompt: string) {
 
 
 .search-input {
+    position: relative;
     height: 50px;
-    width: 66%;
+    width: 60%;
+    appearance: none;
+	border: none;
+	outline: none;
+	border-bottom: .2em solid white;
+	background: rgba(0, 0, 0, 0);
+	border-radius: .2em .2em 0 0;
+	padding: .4em;
+    margin-inline: 20px;
+	color: white;
 }
 
 .clear-button {
+    position: relative;
     left: 10px;
     height: 30px;
     width: 80px;
@@ -90,6 +111,7 @@ async function getCitySuggestion(prompt: string) {
 }
 
 .search-button {
+    position: relative;
     left: 20px;
     height: 30px;
     width: 80px;

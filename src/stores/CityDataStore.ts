@@ -115,11 +115,14 @@ export const useCityDataStore = defineStore(
                     foundCities = await this.apiGetSearchCities(newCityName);
                     if (foundCities.length === 0) {
                         this.cityName = "No city found";
+                        this.city = {};
+                        this.currentWeather = {};
+                        this.forecast = {};
+                        this.forecastHourly = [];
                         return;
                     }
                     this.city = foundCities[0].data;
                 }
-                console.log(this.city);
                 this.cityName = this.city.name;
                 formatedLatLonString = this.city.lat.toString() + "," + this.city.lon.toString();
                 this.apiGetCurrentWeather(formatedLatLonString);
