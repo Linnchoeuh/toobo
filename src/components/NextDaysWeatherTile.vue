@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useCityDataStore } from "@/stores/CityDataStore"
+import ExtraInfo from "./ExtraInfo.vue";
 
 const store = useCityDataStore();
 
@@ -21,36 +22,31 @@ const props = defineProps({
                     <slot name="min-temp"></slot>°C
                 </h4>
             </div>
-            <div class="extra-info-div">
-                <h3 class="extra-info">
-                    <slot name="date"></slot>
-                </h3>
-            </div>
-            <div class="extra-info-div">
-                <h3 class="extra-info"> Humidity:
-                    <slot name="avg-humidity"></slot>%
-                </h3>
-            </div>
-            <div class="extra-info-div">
-                <h3 class="extra-info"> UV:
-                    <slot name="uv"></slot>
-                </h3>
-            </div>
-            <div class="extra-info-div">
-                <h3 class="extra-info"> Average wind speed:
-                    <slot name="max-wind-spd"></slot> km/h
-                </h3>
-            </div>
-            <div class="extra-info-div">
-                <h3 class="extra-info"> Sunrise:
-                    <slot name="sunrise"></slot>
-                </h3>
-            </div>
-            <div class="extra-info-div">
-                <h3 class="extra-info"> Sunset:
-                    <slot name="sunset"></slot>
-                </h3>
-            </div>
+            <ExtraInfo>
+                <template #text> <slot name="date"></slot> </template>
+            </ExtraInfo>
+            <ExtraInfo>
+                <template #pre-text> Humidity: </template>
+                <template #text> <slot name="avg-humidity"></slot> </template>
+                <template #post-text>%</template>
+            </ExtraInfo>
+            <ExtraInfo>
+                <template #pre-text> UV: </template>
+                <template #text> <slot name="uv"></slot> </template>
+            </ExtraInfo>
+            <ExtraInfo>
+                <template #pre-text> Average wind speed: </template>
+                <template #text> <slot name="max-wind-spd"></slot> </template>
+                <template #post-text> km/h </template>
+            </ExtraInfo>
+            <ExtraInfo>
+                <template #pre-text> Sunrise: </template>
+                <template #text> <slot name="sunrise"></slot> </template>
+            </ExtraInfo>
+            <ExtraInfo>
+                <template #pre-text> Sunset: </template>
+                <template #text> <slot name="sunset"></slot> </template>
+            </ExtraInfo>
         </div>
     </div>
 </template>
@@ -69,17 +65,17 @@ const props = defineProps({
 
 .extra-info-div {
     position: relative;
-    height: 60px;
+    /* height: 60px; */
     display: inline-block;
     vertical-align: middle;
     margin-inline: 20px;
-    top: -15px;
+    top: -18px;
 }
 
 .weather-img {
     position: relative;
     width: 64px;
-    top: -1px;
+    top: 8px;
     left: 15px;
     margin-inline: 20px;
 }
@@ -89,12 +85,8 @@ const props = defineProps({
     display: inline-block;
     vertical-align: middle;
     margin-right: 20px;
-    top: -30px;
+    top: -20px;
     left: 15px;
-}
-.extra-info {
-    position: relative;
-    font-weight: bold;
 }
 
 </style>
