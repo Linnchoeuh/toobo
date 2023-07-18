@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 import type { CityDataResponse } from "@/stores/CityDataStore"
 import { useCityDataStore } from "@/stores/CityDataStore"
+import clearImg from "@/assets/clear.png"
+import searchImg from "@/assets/search.png"
 
 const prompt = ref('');
 const store = useCityDataStore();
@@ -27,7 +29,7 @@ async function getCitySuggestion(prompt: string) {
                 <div>
                     <text class="city-name"> {{ store.cityName }} </text>
                 </div>
-                <div>
+                <div class="search-bloc">
                     <input class="search-input" v-model="prompt"
                     @keyup="getCitySuggestion(prompt)" @keyup.enter="store.changeCity(prompt)"
                     placeholder="Enter city name" type="text" list="suggested-cities">
@@ -35,8 +37,13 @@ async function getCitySuggestion(prompt: string) {
                         <option v-for="cities in suggestedCities" :value="cities.data.name">
                             {{ cities.fixedName }} ({{ cities.data.country }}, {{ cities.data.region }}) </option>
                     </datalist>
-                    <button class="clear-button" @click="prompt=''; store.resetCityData()"> Clear </button>
-                    <button class="search-button" @click="store.changeCity(prompt)"> Search </button>
+                    <input class="clear-button" type="image" alt="Clear"
+                    :src="clearImg"
+                    @click="prompt=''; store.resetCityData()">
+                    <input class="search-button" type="image" alt="Search"
+                    :src="searchImg"
+                    @click="store.changeCity(prompt)">
+
                 </div>
             </div>
         </div>
@@ -100,23 +107,18 @@ async function getCitySuggestion(prompt: string) {
 	padding: .4em;
     margin-inline: 20px;
 	color: white;
+    font-size: 20px;;
 }
 
-.clear-button {
+input[type='image'] {
     position: relative;
-    left: 10px;
-    height: 30px;
-    width: 80px;
-
+    /* background: white; */
+    width: 50px;
+    height: 50px;
+    margin-inline: 10px;
+    vertical-align: middle;
 }
 
-.search-button {
-    position: relative;
-    left: 20px;
-    height: 30px;
-    width: 80px;
-
-}
 
 /* .search-bar button {
     position: relative;

@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import type { CityDataResponse } from "@/stores/CityDataStore"
 import { useCityDataStore } from "@/stores/CityDataStore"
 import sunriseSunset from "@/assets/sunrise_sunset.png"
-import windImg from "@/assets/wind.png"
 
 const store = useCityDataStore();
 

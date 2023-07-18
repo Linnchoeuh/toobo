@@ -82,7 +82,6 @@ export const useCityDataStore = defineStore(
                     );
                     this.currentWeather = response.data;
                     this.currentWeather.current.condition.icon = this.currentWeather.current.condition.icon.replaceAll("64", "128");
-                    console.log("Current weather:", this.currentWeather);
                 } catch (error) {
                     console.error(error);
                 }
@@ -101,7 +100,6 @@ export const useCityDataStore = defineStore(
                     );
                     this.forecast = response.data;
                     this.getNext24Hours(this.forecast)
-                    console.log("Forecast weather:", response.data);
                 } catch (error) {
                     console.error(error);
                 }
@@ -111,6 +109,8 @@ export const useCityDataStore = defineStore(
                 let formatedLatLonString: string;
                 let foundCities: Array<CityDataResponse> = [];
 
+                if (newCityName === "")
+                    return;
                 if (!this.isCityDataSet()) {
                     foundCities = await this.apiGetSearchCities(newCityName);
                     if (foundCities.length === 0) {
