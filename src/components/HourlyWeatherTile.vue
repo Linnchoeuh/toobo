@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useCityDataStore } from "@/stores/CityDataStore"
+import waterDrop from "@/assets/water_drop.png"
 
 const props = defineProps({
   imageUrl: String
 })
 
+// const waterDrop: string = ;
 const store = useCityDataStore();
 
 </script>
@@ -25,6 +27,8 @@ const store = useCityDataStore();
             <text class="feels-like-div">
                     <slot name="feels-like"></slot>
             </text>
+            <p></p>
+            <img class="rain-prob-img" :src="waterDrop" />
             <h4 class="rain-prob-div">
                     <slot name="rain-prob"></slot>
             </h4>
@@ -77,7 +81,20 @@ const store = useCityDataStore();
 .feels-like-div {
     position: relative;
     font-size: 13px;
+}
 
+.rain-prob-img {
+    position: relative;
+    width: 16px;
+    top: 10px;
+    left: calc(50% - 20px);
+}
+
+.rain-prob-div {
+    position: relative;
+    width: 16px;
+    top: -16px;
+    left: 50%;
 }
 
 </style>
