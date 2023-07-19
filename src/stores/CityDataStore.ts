@@ -38,7 +38,6 @@ export const useCityDataStore = defineStore(
             async refreshWeatherWithIp()
             {
                 try {
-                    let foundCities: Array<CityDataResponse> = [];
                     const response = await axios.get("https://api.ipify.org?format=json");
                     this.ip = response.data.ip;
                     await this.apiGetCurrentWeather(this.ip);

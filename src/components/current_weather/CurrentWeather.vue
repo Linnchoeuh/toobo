@@ -57,7 +57,6 @@ function objectNotEmpty(target: object)
 <style scoped>
 
 .current-weather-block {
-    width: 100vw;
     margin-bottom: 30px;
 }
 

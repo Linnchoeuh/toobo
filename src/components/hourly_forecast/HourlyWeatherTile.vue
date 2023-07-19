@@ -70,6 +70,7 @@ const store = useCityDataStore();
     position: relative;
     text-align: center;
     top: -10px;
+    overflow-x: scroll;
 
 }
 .temp-div {

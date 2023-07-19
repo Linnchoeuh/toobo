@@ -70,7 +70,7 @@ function objectNotEmpty(target: object)
     position: relative;
     top: 5px;
     left: 5px;
-    width: 99vw;
+    width: 99%;
     height: 250px;
     overflow-x: auto;
     white-space: nowrap;
