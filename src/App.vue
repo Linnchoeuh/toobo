@@ -10,14 +10,16 @@ import { useFavCitiesStore } from "@/stores/FavoriteCitiesStore"
 const favCitiesStore = useFavCitiesStore();
 const cityDataStore = useCityDataStore();
 
-cityDataStore.refreshWeatherWithIp();
+cityDataStore.updateAllWeatherData();
 </script>
-
 
 <template>
   <div class="main-div">
     <div v-if="favCitiesStore.showFavTab" class="fav-list">
-
+      <h1>Favorites</h1>
+      <li>
+        <h2 v-for="city in favCitiesStore.favList"> {{ city.name }} </h2>
+      </li>
     </div>
     <div class="weather-app">
       <TopBar />

@@ -1,5 +1,7 @@
-import { defineStore } from 'pinia'
+import { createPinia, defineStore } from 'pinia'
 import axios from "axios"
+import type { CityFavData } from "@/stores/FavoriteCitiesStore"
+import { useFavCitiesStore } from "@/stores/FavoriteCitiesStore"
 
 export type APILocationData = {
     lat: number;
@@ -13,40 +15,69 @@ export type APILocationData = {
     url: string;
 }
 
+export type APICurrentWeatherData = {
+    location: APILocationData;
+    current: Object;
+}
+
 export type CityDataResponse = {
     data: APILocationData;
     fixedName: string;
 }
 
+export type CityDataObject = {
+    apiKey: string;
+    baseUrl: string;
+    cityName: string;
+    city: APILocationData;
+    currentWeather: APICurrentWeatherData;
+    forecast: Object;
+    forecastHourly: Array<Object>;
+    cityFav: CityFavData;
+}
+
 export const useCityDataStore = defineStore(
     "CityData",
     {
-        state: () => {
+        state: (): CityDataObject => {
             return {
                 apiKey: "7abe50900eba444fa02192358230307",
                 baseUrl: "http://api.weatherapi.com/v1/",
                 cityName: "No city selected",
-                ip: "0.0.0.0",
                 city: {},
                 currentWeather: {},
                 forecast: {},
                 forecastHourly: [],
+                cityFav: {},
             };
         },
 
         actions: {
-            async refreshWeatherWithIp()
-            {
+            async updateAllWeatherData(cityName: string = "auto:ip") {
                 try {
-                    const response = await axios.get("https://api.ipify.org?format=json");
-                    this.ip = response.data.ip;
-                    await this.apiGetCurrentWeather(this.ip);
-                    this.cityName = this.currentWeather.location.name;
-                    this.apiGetForecast(this.ip);
+                    await this.apiGetCurrentWeather(cityName);
+                    await this.apiGetForecast(
+                        this.latLonToString(
+                            this.currentWeather.location.lat,
+                            this.currentWeather.location.lon));
+                    if (this.isCityDataSet()) {
+                        this.cityName = this.city.name;
+                    } else {
+                        this.cityName = this.forecast.location.name;
+                    }
+                    this.cityFav.name = this.cityName;
+                    this.cityFav.region = this.forecast.location.region;
+                    this.cityFav.country = this.forecast.location.country;
+                    this.cityFav.lat = this.forecast.location.lat;
+                    this.cityFav.lon = this.forecast.location.lon;
+                    useFavCitiesStore().updateCurrentCityFaved(this.cityFav);
+                    // console.log("fav: ", this.cityFav);
+                    // console.log("current: ", this.currentWeather);
+                    // console.log("forecast: ", this.forecast);
+
                 } catch (error) {
                     console.error(error);
                 }
-
 
             },
             async apiGetSearchCities(cityName: string)
@@ -81,6 +112,7 @@ export const useCityDataStore = defineStore(
                     );
                     this.currentWeather = response.data;
                     this.currentWeather.current.condition.icon = this.currentWeather.current.condition.icon.replaceAll("64", "128");
+                    console.log("Weather", this.currentWeather);
                 } catch (error) {
                     console.error(error);
                 }
@@ -105,7 +137,6 @@ export const useCityDataStore = defineStore(
             },
             async changeCity(newCityName: string)
             {
-                let formatedLatLonString: string;
                 let foundCities: Array<CityDataResponse> = [];
 
                 if (newCityName === "")
@@ -118,14 +149,12 @@ export const useCityDataStore = defineStore(
                         this.currentWeather = {};
                         this.forecast = {};
                         this.forecastHourly = [];
+                        useFavCitiesStore().updateCurrentCityFaved(this.cityFav);
                         return;
                     }
                     this.city = foundCities[0].data;
                 }
-                this.cityName = this.city.name;
-                formatedLatLonString = this.city.lat.toString() + "," + this.city.lon.toString();
-                this.apiGetCurrentWeather(formatedLatLonString);
-                this.apiGetForecast(formatedLatLonString);
+                this.updateAllWeatherData(this.latLonToString(this.city.lat, this.city.lon));
             },
             getNext24Hours(forecastData: object)
             {
@@ -149,7 +178,10 @@ export const useCityDataStore = defineStore(
                         break;
                 }
             },
-            setCityData(cityData: object)
+            latLonToString(latitude: number, longitude: number): string {
+                return (latitude.toString() + "," + longitude.toString());
+            },
+            setCityData(cityData: APILocationData)
             {
                 this.city = cityData;
             },

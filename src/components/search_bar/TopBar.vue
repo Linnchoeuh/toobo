@@ -4,15 +4,7 @@ import type { CityDataResponse } from "@/stores/CityDataStore"
 import { useCityDataStore } from "@/stores/CityDataStore"
 import SearchPart from '@/components/search_bar/SearchPart.vue'
 import CityInfoPart from './CityInfoPart.vue'
-import clearImg from "@/assets/clear.png"
-import searchImg from "@/assets/search.png"
-import favTabImg from "@/assets/fav_tab.png"
-import starEmpty from "@/assets/star_empty.png"
-import starFilled from "@/assets/star_filled.png"
 
-import TestComponent from "@/components/TestComponent.vue"
-
-const prompt = ref('');
 const store = useCityDataStore();
 const suggestedCities = ref<Array<CityDataResponse>>([]);
 
