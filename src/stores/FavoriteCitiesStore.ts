@@ -42,8 +42,6 @@ export const useFavCitiesStore = defineStore(
             findFavCityIndex(name: string, region: string, country: string): number {
                 let favCityObj: CityFavData;
 
-                // console.log(this.favList.length, this.favList,
-                //     "Search: ", name, region, country);
                 for (let i: number = 0; i < this.favList.length; ++i) {
                     favCityObj = this.favList[i];
                     if (name === favCityObj.name &&
@@ -85,16 +83,15 @@ export const useFavCitiesStore = defineStore(
                 this.currentCityFaved = this.isCityInFav(favCityObj);
             },
             async refreshFavList() {
-                let favCityObj: CityFavData;
                 let weather: TempWeatherObj = {temp: 0, icon: ""};
 
                 for (let i: number = 0; i < this.favList.length; ++i) {
-                    favCityObj = this.favList[i];
                     weather = await useCityDataStore().apiGetTempAndWeatherImg(
-                        useCityDataStore().latLonToString(favCityObj.lat, favCityObj.lon)
+                        useCityDataStore().latLonToString(this.favList[i].lat, this.favList[i].lon)
                     );
-                    favCityObj.temp = weather.temp;
-                    favCityObj.icon = weather.icon.replaceAll("128", "64");;
+                    this.favList[i].temp = weather.temp;
+                    this.favList[i].icon = weather.icon.replaceAll("128", "64");
+                    console.log(weather);
                 }
             }
         }

@@ -43,6 +43,7 @@ function changeCity(city: CityFavData): void
             </div>
             <h2>{{ city.name }}</h2>
             <h3> ({{ city.region }}, {{ city.country }})</h3>
+            <div class="sub-line"></div>
         </div>
     </div>
 </div>
@@ -77,8 +78,8 @@ input[type='image'] {
 
 .title-div {
     padding: 10px;
-    height: 70px;
-    margin-bottom: 10px;
+    height: 80px;
+	border-bottom: 3px solid white;
 }
 
 .title-div > div {
@@ -93,11 +94,24 @@ input[type='image'] {
 
 .fav-elem {
     padding: 15px;
+
+}
+
+.sub-line {
+    height: 3px;
+    background: white;
+    border-radius: 5px;
+    width: 100%;
 }
 
 .fav-elem > div {
     display: inline-block;
     vertical-align: middle;
+}
+
+.weather-img {
+    width: 64px;
+    margin-right: 15px;
 }
 
 </style>

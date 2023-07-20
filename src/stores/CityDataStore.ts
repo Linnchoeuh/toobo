@@ -66,9 +66,7 @@ export const useCityDataStore = defineStore(
                             this.currentWeather.location.lat,
                             this.currentWeather.location.lon
                     ));
-                    console.log(this.cityTmpName);
                     if (this.cityTmpName !== "") {
-                        console.log(this.cityTmpName);
                         this.cityName = this.cityTmpName;
                     } else {
                         this.cityName = this.forecast.location.name;
@@ -170,7 +168,7 @@ export const useCityDataStore = defineStore(
                         }
                     );
                     weather.temp = response.data.current.temp_c;
-                    weather.icon = this.currentWeather.current.condition.icon;
+                    weather.icon = response.data.current.condition.icon;
                     return (weather)
                 } catch (error) {
                     console.error(error);
