@@ -11,7 +11,6 @@ import { useFavCitiesStore } from "@/stores/FavoriteCitiesStore"
 const favCitiesStore = useFavCitiesStore();
 const cityDataStore = useCityDataStore();
 
-cityDataStore.updateAllWeatherData();
 </script>
 
 <template>

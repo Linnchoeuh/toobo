@@ -11,8 +11,6 @@ import windImg from "@/assets/wind.png"
 const store = useCityDataStore();
 const sunImgPath: string = "//cdn.weatherapi.com/weather/128x128/day/113.png";
 
-console.log(store.currentWeather);
-
 function objectNotEmpty(target: object)
 {
     for(var prop in target)

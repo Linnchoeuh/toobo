@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { useCityDataStore } from "@/stores/CityDataStore"
 import type { TempWeatherObj } from "@/stores/CityDataStore"
+import Cookies from 'js-cookie';
 
 export type CityFavData = {
     name: string;
@@ -30,6 +31,14 @@ export const useFavCitiesStore = defineStore(
         },
 
         actions: {
+            loadFavoriteCities(): void {
+                const myCookieValue = Cookies.get('FavCities');
+                this.favList = JSON.parse(myCookieValue);
+                // console.log("Cookie? ", this.favList); // Output: 'cookieValue'
+            },
+            saveFavoriteCities(): void {
+                Cookies.set("FavCities", JSON.stringify(this.favList), {expires: 36500, Samesite: "Lax"});
+            },
             toggleFavTab(): void {
                 this.showFavTab = !this.showFavTab;
                 if (this.showFavTab) {
@@ -53,7 +62,6 @@ export const useFavCitiesStore = defineStore(
                 return (-1);
             },
             addFavorite(favCityObj: CityFavData): void {
-                console.log(favCityObj);
                 let favCityObjCpy: CityFavData = {
                     name: favCityObj.name,
                     region: favCityObj.region,
@@ -66,6 +74,7 @@ export const useFavCitiesStore = defineStore(
                 if (!this.isCityInFav(favCityObj)) {
                     this.currentCityFaved = true;
                     this.favList.push(favCityObjCpy);
+                    this.saveFavoriteCities();
                 }
             },
             removeFavorite(name: string, region: string, country: string): void {
@@ -74,6 +83,7 @@ export const useFavCitiesStore = defineStore(
                 if (index >= 0) {
                     this.favList.splice(index, 1);
                     this.currentCityFaved = false;
+                    this.saveFavoriteCities();
                 }
             },
             isCityInFav(favCityObj: CityFavData): boolean {
@@ -91,7 +101,6 @@ export const useFavCitiesStore = defineStore(
                     );
                     this.favList[i].temp = weather.temp;
                     this.favList[i].icon = weather.icon.replaceAll("128", "64");
-                    console.log(weather);
                 }
             }
         }

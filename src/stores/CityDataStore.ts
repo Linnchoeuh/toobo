@@ -79,9 +79,9 @@ export const useCityDataStore = defineStore(
                     this.cityFav.temp = this.currentWeather.current.temp_c;
                     this.cityFav.icon = this.currentWeather.current.condition.icon.replaceAll("128", "64");
                     useFavCitiesStore().updateCurrentCityFaved(this.cityFav);
-                    console.log("fav: ", this.cityFav);
-                    console.log("current: ", this.currentWeather);
-                    console.log("forecast: ", this.forecast);
+                    // console.log("fav: ", this.cityFav);
+                    // console.log("current: ", this.currentWeather);
+                    // console.log("forecast: ", this.forecast);
 
                 } catch (error) {
                     console.error(error);
@@ -120,7 +120,6 @@ export const useCityDataStore = defineStore(
             async apiGetCurrentWeather(apiQParameter: string)
             {
                 let cityTmpName: string = this.cityTmpName;
-                console.log(this.cityTmpName);
                 try {
                     const response = await axios.get(
                         this.baseUrl + "current.json", {
