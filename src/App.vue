@@ -3,6 +3,7 @@ import TopBar from './components/search_bar/TopBar.vue'
 import CurrentWeather from './components/current_weather/CurrentWeather.vue';
 import HourlyWeather from './components/hourly_forecast/HourlyWeather.vue';
 import NextDaysWeather from './components/day_forecast/NextDaysWeather.vue';
+import FavTab from "@/components/fav_tab/FavTab.vue"
 import { useCityDataStore } from "@/stores/CityDataStore"
 import { useFavCitiesStore } from "@/stores/FavoriteCitiesStore"
 
@@ -15,12 +16,7 @@ cityDataStore.updateAllWeatherData();
 
 <template>
   <div class="main-div">
-    <div v-if="favCitiesStore.showFavTab" class="fav-list">
-      <h1>Favorites</h1>
-      <li>
-        <h2 v-for="city in favCitiesStore.favList"> {{ city.name }} </h2>
-      </li>
-    </div>
+    <FavTab v-if="favCitiesStore.showFavTab"></FavTab>
     <div class="weather-app">
       <TopBar />
       <div class="sub-search-bar">
@@ -48,15 +44,7 @@ cityDataStore.updateAllWeatherData();
   overflow-y: auto;
 }
 
-.fav-list {
-  float: left;
-  /* position: relative; */
-  width: 200px;
-  height: 100%;
-  background: black;
-  z-index: 2;
-    /* background: linear-gradient(180deg, black, transparent); */
-}
+
 /* .sub-search-bar {
   position: relative;
   top: 90px;

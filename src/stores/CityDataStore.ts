@@ -25,11 +25,16 @@ export type CityDataResponse = {
     fixedName: string;
 }
 
+export type TempWeatherObj = {
+    temp: number;
+    icon: string;
+}
+
 export type CityDataObject = {
     apiKey: string;
     baseUrl: string;
     cityName: string;
-    city: APILocationData;
+    cityTmpName: string;
     currentWeather: APICurrentWeatherData;
     forecast: Object;
     forecastHourly: Array<Object>;
@@ -44,7 +49,7 @@ export const useCityDataStore = defineStore(
                 apiKey: "7abe50900eba444fa02192358230307",
                 baseUrl: "http://api.weatherapi.com/v1/",
                 cityName: "No city selected",
-                city: {},
+                cityTmpName: "",
                 currentWeather: {},
                 forecast: {},
                 forecastHourly: [],
@@ -59,9 +64,12 @@ export const useCityDataStore = defineStore(
                     await this.apiGetForecast(
                         this.latLonToString(
                             this.currentWeather.location.lat,
-                            this.currentWeather.location.lon));
-                    if (this.isCityDataSet()) {
-                        this.cityName = this.city.name;
+                            this.currentWeather.location.lon
+                    ));
+                    console.log(this.cityTmpName);
+                    if (this.cityTmpName !== "") {
+                        console.log(this.cityTmpName);
+                        this.cityName = this.cityTmpName;
                     } else {
                         this.cityName = this.forecast.location.name;
                     }
@@ -70,37 +78,51 @@ export const useCityDataStore = defineStore(
                     this.cityFav.country = this.forecast.location.country;
                     this.cityFav.lat = this.forecast.location.lat;
                     this.cityFav.lon = this.forecast.location.lon;
+                    this.cityFav.temp = this.currentWeather.current.temp_c;
+                    this.cityFav.icon = this.currentWeather.current.condition.icon.replaceAll("128", "64");
                     useFavCitiesStore().updateCurrentCityFaved(this.cityFav);
-                    // console.log("fav: ", this.cityFav);
-                    // console.log("current: ", this.currentWeather);
-                    // console.log("forecast: ", this.forecast);
+                    console.log("fav: ", this.cityFav);
+                    console.log("current: ", this.currentWeather);
+                    console.log("forecast: ", this.forecast);
 
                 } catch (error) {
                     console.error(error);
                 }
 
             },
-            async apiGetSearchCities(cityName: string)
+            async apiGetSearchCities(cityName: string): Promise<Array<CityDataResponse>>
             {
                 let foundCities: Array<CityDataResponse> = [];
+                const favCities = useFavCitiesStore();
+
                 if (cityName === "")
                     return (foundCities);
-                const response = await axios.get(
-                    this.baseUrl + "search.json", {
-                        params: {
-                            key: this.apiKey,
-                            q: cityName,
+                try {
+                    const response = await axios.get(
+                        this.baseUrl + "search.json", {
+                            params: {
+                                key: this.apiKey,
+                                q: cityName,
+                            }
                         }
+                    );
+                    for (let i = 0; i < response.data.length; ++i) {
+                        foundCities.push({data: response.data[i],
+                            fixedName: response.data[i].name.replaceAll("-", " ")});
                     }
-                );
-                for (let i = 0; i < response.data.length; ++i) {
-                    foundCities.push({data: response.data[i],
-                        fixedName: response.data[i].name.replaceAll("-", " ")});
+                    for (let i = 0; i < favCities.favList.length; ++i) {
+                        foundCities.push({data: favCities.favList[i],
+                            fixedName: "[FAV] " + favCities.favList[i].name.replaceAll("-", " ")});
+                    }
+                } catch {
+
                 }
                 return (foundCities);
             },
             async apiGetCurrentWeather(apiQParameter: string)
             {
+                let cityTmpName: string = this.cityTmpName;
+                console.log(this.cityTmpName);
                 try {
                     const response = await axios.get(
                         this.baseUrl + "current.json", {
@@ -112,10 +134,10 @@ export const useCityDataStore = defineStore(
                     );
                     this.currentWeather = response.data;
                     this.currentWeather.current.condition.icon = this.currentWeather.current.condition.icon.replaceAll("64", "128");
-                    console.log("Weather", this.currentWeather);
                 } catch (error) {
                     console.error(error);
                 }
+                this.cityTmpName = cityTmpName;
             },
             async apiGetForecast(apiQParameter: string)
             {
@@ -135,26 +157,34 @@ export const useCityDataStore = defineStore(
                     console.error(error);
                 }
             },
-            async changeCity(newCityName: string)
-            {
-                let foundCities: Array<CityDataResponse> = [];
+            async apiGetTempAndWeatherImg(apiQParameter: string): Promise<TempWeatherObj> {
+                let weather: TempWeatherObj = {temp: 0, icon: ""};
 
-                if (newCityName === "")
-                    return;
-                if (!this.isCityDataSet()) {
-                    foundCities = await this.apiGetSearchCities(newCityName);
-                    if (foundCities.length === 0) {
-                        this.cityName = "No city found";
-                        this.city = {};
-                        this.currentWeather = {};
-                        this.forecast = {};
-                        this.forecastHourly = [];
-                        useFavCitiesStore().updateCurrentCityFaved(this.cityFav);
-                        return;
-                    }
-                    this.city = foundCities[0].data;
+                try {
+                    const response = await axios.get(
+                        this.baseUrl + "current.json", {
+                            params: {
+                                key: this.apiKey,
+                                q: apiQParameter,
+                            }
+                        }
+                    );
+                    weather.temp = response.data.current.temp_c;
+                    weather.icon = this.currentWeather.current.condition.icon;
+                    return (weather)
+                } catch (error) {
+                    console.error(error);
                 }
-                this.updateAllWeatherData(this.latLonToString(this.city.lat, this.city.lon));
+                return (weather);
+            },
+            clearStore(): void
+            {
+                this.cityName = "";
+                this.cityTmpName = "";
+                this.currentWeather = {};
+                this.forecast = {};
+                this.forecastHourly = [];
+                useFavCitiesStore().updateCurrentCityFaved(this.cityFav);
             },
             getNext24Hours(forecastData: object)
             {
@@ -181,20 +211,12 @@ export const useCityDataStore = defineStore(
             latLonToString(latitude: number, longitude: number): string {
                 return (latitude.toString() + "," + longitude.toString());
             },
-            setCityData(cityData: APILocationData)
-            {
-                this.city = cityData;
+            setCityTmpName(newString: string = "") {
+                this.cityTmpName = newString;
             },
-            resetCityData()
-            {
-                this.setCityData({});
-            },
-            isCityDataSet()
-            {
-                for(var prop in this.city)
-                    return true;
-                return false;
-            },
+            setCityName(newString: string = "") {
+                this.cityName = newString;
+            }
         }
     }
 );

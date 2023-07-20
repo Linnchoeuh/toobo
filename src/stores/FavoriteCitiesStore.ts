@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia'
+import { useCityDataStore } from "@/stores/CityDataStore"
+import type { TempWeatherObj } from "@/stores/CityDataStore"
 
 export type CityFavData = {
     name: string;
@@ -6,6 +8,8 @@ export type CityFavData = {
     country: string;
     lon: number;
     lat: number;
+    temp: number;
+    icon: string;
 }
 
 export type FavCitiesObject = {
@@ -28,6 +32,9 @@ export const useFavCitiesStore = defineStore(
         actions: {
             toggleFavTab(): void {
                 this.showFavTab = !this.showFavTab;
+                if (this.showFavTab) {
+                    this.refreshFavList();
+                }
             },
             setFavTabDisplay(show: boolean): void {
                 this.showFavTab = show;
@@ -35,8 +42,8 @@ export const useFavCitiesStore = defineStore(
             findFavCityIndex(name: string, region: string, country: string): number {
                 let favCityObj: CityFavData;
 
-                console.log(this.favList.length, this.favList,
-                    "Search: ", name, region, country);
+                // console.log(this.favList.length, this.favList,
+                //     "Search: ", name, region, country);
                 for (let i: number = 0; i < this.favList.length; ++i) {
                     favCityObj = this.favList[i];
                     if (name === favCityObj.name &&
@@ -48,12 +55,15 @@ export const useFavCitiesStore = defineStore(
                 return (-1);
             },
             addFavorite(favCityObj: CityFavData): void {
+                console.log(favCityObj);
                 let favCityObjCpy: CityFavData = {
                     name: favCityObj.name,
                     region: favCityObj.region,
                     country: favCityObj.country,
                     lat: favCityObj.lat,
-                    lon: favCityObj.lon
+                    lon: favCityObj.lon,
+                    temp: favCityObj.temp,
+                    icon: favCityObj.icon,
                 }
                 if (!this.isCityInFav(favCityObj)) {
                     this.currentCityFaved = true;
@@ -73,6 +83,19 @@ export const useFavCitiesStore = defineStore(
             },
             updateCurrentCityFaved(favCityObj: CityFavData): void {
                 this.currentCityFaved = this.isCityInFav(favCityObj);
+            },
+            async refreshFavList() {
+                let favCityObj: CityFavData;
+                let weather: TempWeatherObj = {temp: 0, icon: ""};
+
+                for (let i: number = 0; i < this.favList.length; ++i) {
+                    favCityObj = this.favList[i];
+                    weather = await useCityDataStore().apiGetTempAndWeatherImg(
+                        useCityDataStore().latLonToString(favCityObj.lat, favCityObj.lon)
+                    );
+                    favCityObj.temp = weather.temp;
+                    favCityObj.icon = weather.icon.replaceAll("128", "64");;
+                }
             }
         }
     }

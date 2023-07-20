@@ -20,10 +20,10 @@ const store = useCityDataStore();
         <input class="fav-tab-button" type="image" alt="Fav list"
         :src="favTabImg" @click="favCitiesStore.toggleFavTab()">
         <input v-if="!favCitiesStore.currentCityFaved"
-        class="fav-button" type="image" alt="Search"
+        class="fav-button" type="image" alt="Fav"
         :src="starEmpty" @click="favCitiesStore.addFavorite(store.cityFav)">
         <input v-if="favCitiesStore.currentCityFaved"
-        class="fav-button" type="image" alt="Search"
+        class="fav-button" type="image" alt="Unfav"
         :src="starFilled" @click="favCitiesStore.removeFavorite(store.cityFav.name, store.cityFav.region, store.cityFav.country)">
     </div>
     <div class="city-name-div">
