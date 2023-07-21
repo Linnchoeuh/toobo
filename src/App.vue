@@ -7,7 +7,6 @@ import NextDaysWeather from './components/day_forecast/NextDaysWeather.vue';
 import FavTab from "@/components/fav_tab/FavTab.vue"
 import { useCityDataStore } from "@/stores/CityDataStore"
 import { useFavCitiesStore } from "@/stores/FavoriteCitiesStore"
-import TestComponent from "@/components/TestComponent.vue"
 
 // const store = useCityDataStore();
 const favCitiesStore = useFavCitiesStore();
