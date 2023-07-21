@@ -47,7 +47,9 @@ const store = useCityDataStore();
 }
 
 .city-name-div {
-    overflow-x: auto;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: clip;
 
 }
 

@@ -20,10 +20,29 @@ async function getCitySuggestion(prompt: string) {
     }
 }
 
+function repositionSubElems()
+{
+    let divId: string = "top-bar";
+    let width: number = document.getElementById(divId).offsetWidth;
+
+    if (width <= 1000)
+        document.getElementById(divId).style["grid-template-columns"] = "100%"
+    else
+        document.getElementById(divId).style["grid-template-columns"] = ""
+}
+
+function resizeElem()
+{
+    repositionSubElems();
+}
+
+window.onresize = resizeElem;
+window.onclick = resizeElem;
+
 </script>
 
 <template>
-    <div class="top-bar">
+    <div class="top-bar" id="top-bar">
         <CityInfoPart></CityInfoPart>
         <SearchPart></SearchPart>
     </div>
@@ -37,16 +56,10 @@ async function getCitySuggestion(prompt: string) {
     position: sticky;
     top: 0px;
     width: 100%;
+    margin-bottom: 20px;
 
     background: linear-gradient(180deg, var(--bg-start-color), transparent);
-    height: 100px;
     z-index: 1;
-}
-@media (max-width:1000px) {
-    .top-bar {
-        grid-template-columns: 100%;
-        height: 160px;
-    }
 }
 
 
