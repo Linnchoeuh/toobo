@@ -4,40 +4,28 @@ import type { CityDataResponse } from "@/stores/CityDataStore"
 import { useCityDataStore } from "@/stores/CityDataStore"
 import SearchPart from '@/components/search_bar/SearchPart.vue'
 import CityInfoPart from './CityInfoPart.vue'
+import { useCSSResponsiveStore } from "@/stores/CSSResponsiveStore"
 
-const store = useCityDataStore();
-const suggestedCities = ref<Array<CityDataResponse>>([]);
+const CSSRespStore = useCSSResponsiveStore();
 
-async function getCitySuggestion(prompt: string) {
-    suggestedCities.value = [];
-    store.resetCityData();
-    if (prompt === "")
-        return;
-    try {
-        suggestedCities.value = await store.apiGetSearchCities(prompt);
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-function repositionSubElems()
+function repositionSubElems(): boolean
 {
     let divId: string = "top-bar";
-    let width: number = document.getElementById(divId).offsetWidth;
+    let width: number;
 
+    try {
+        width = document.getElementById(divId).offsetWidth;
+    } catch {
+        return (false);
+    }
     if (width <= 1000)
         document.getElementById(divId).style["grid-template-columns"] = "100%"
     else
         document.getElementById(divId).style["grid-template-columns"] = ""
+    return (true);
 }
 
-function resizeElem()
-{
-    repositionSubElems();
-}
-
-window.onresize = resizeElem;
-window.onclick = resizeElem;
+CSSRespStore.addFunction(repositionSubElems);
 
 </script>
 

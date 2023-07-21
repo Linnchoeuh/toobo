@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import TopBar from './components/search_bar/TopBar.vue'
 import CurrentWeather from './components/current_weather/CurrentWeather.vue';
 import HourlyWeather from './components/hourly_forecast/HourlyWeather.vue';
@@ -6,6 +7,7 @@ import NextDaysWeather from './components/day_forecast/NextDaysWeather.vue';
 import FavTab from "@/components/fav_tab/FavTab.vue"
 import { useCityDataStore } from "@/stores/CityDataStore"
 import { useFavCitiesStore } from "@/stores/FavoriteCitiesStore"
+import TestComponent from "@/components/TestComponent.vue"
 
 // const store = useCityDataStore();
 const favCitiesStore = useFavCitiesStore();

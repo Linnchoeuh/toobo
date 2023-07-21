@@ -20,11 +20,11 @@ function objectNotEmpty(target: object)
             <div class="side-info-sub">
                 <div class="top-side">
                     <div>
-                        <h2>Sunrise</h2>
+                        <h3>Sunrise</h3>
                         <h3><slot name="sunrise"></slot></h3>
                     </div>
                     <div>
-                        <h2>Sunset</h2>
+                        <h3>Sunset</h3>
                         <h3><slot name="sunset"></slot></h3>
                     </div>
                 </div>
@@ -40,8 +40,7 @@ function objectNotEmpty(target: object)
 .side-info-block {
     position: relative;
     padding: 15px;
-    top: -20px;
-    height: 163px;
+    height: 100%;
 }
 
 .side-info-sub {
@@ -52,17 +51,21 @@ function objectNotEmpty(target: object)
 }
 
 .src-img {
-    position: relative;
-    display: block;
-    margin-inline: auto;
-    height: 50px;
-    top: -10px;
+    position: absolute;
+    bottom: 30px;
+    --sunset-img-width: 200px;
+    width: var(--sunset-img-width);
+    left: calc(50% - (var(--sunset-img-width) / 2));
 }
 
 .top-side > div {
     display: inline-block;
     vertical-align: middle;
     width: 50%;
+}
+
+.top-side {
+    margin-bottom: 5px;
 }
 
 .top-side h2 {
@@ -74,11 +77,11 @@ function objectNotEmpty(target: object)
     font-weight: bold;
 }
 
-@media (max-width:600px) {
+/* @media (max-width:600px) {
     .src-img {
         height: 30px;
         top: 15px;
     }
-}
+} */
 
 </style>
