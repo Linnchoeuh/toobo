@@ -34,26 +34,10 @@ const cityDataStore = useCityDataStore();
   width: 100vw;
   height: 100vh;
 }
-/* .main-div > div {
-    display: inline-block;
-    vertical-align: middle;
-} */
 
 .weather-app {
   height: 100vh;
   overflow-y: auto;
 }
-
-
-/* .sub-search-bar {
-  position: relative;
-  top: 90px;
-}
-@media (max-width:800px) {
-    .sub-search-bar {
-      top: 170px;
-    }
-} */
-
 
 </style>

@@ -59,7 +59,7 @@ function changeCity(city: CityFavData): void
   background: black;
   z-index: 2;
 }
-@media (max-width:600px) {
+@media (max-width:775px) {
     .fav-list {
         float: left;
         position: static;
